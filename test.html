@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Hydra-Buddy</title>
+</head>
+<body>
+    <div id="messages"></div>
+    <input type="text" id="input" placeholder="Type a message...">
+    <button id="send">Send</button>
+
+    <script>
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('input');
+        const sendBtn = document.getElementById('send');
+
+        function addMessage(text, isUser = false) {
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${isUser ? 'You' : 'Bot'}:</strong> ${text}`;
+            messages.appendChild(div);
+        }
+
+        function generateResponse(userMessage) {
+            const message = userMessage.toLowerCase();
+            
+            if (message.includes('how are you')) {
+                return "Kirrak! 😎 Ready to help you navigate this beautiful chaos called Hyderabad.";
+            }
+            else if (message.includes('biryani')) {
+                return "Biryani? Go to <strong>Bawarchi</strong> at RTC X Roads or <strong>Meridian</strong> in Panjagutta. Skip Paradise - that's tourist nonsense!";
+            }
+            else if (message.includes('hello') || message.includes('hi')) {
+                return "Hau yaar! Welcome to the real Hyderabad guide!";
+            }
+            else {
+                return "Light lo mama, ask me about biryani, traffic, or chai spots!";
+            }
+        }
+
+        sendBtn.addEventListener('click', () => {
+            const text = input.value.trim();
+            if (!text) return;
+            
+            addMessage(text, true);
+            input.value = '';
+            
+            setTimeout(() => {
+                const response = generateResponse(text);
+                addMessage(response, false);
+            }, 500);
+        });
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendBtn.click();
+            }
+        });
+
+        // Test on load
+        setTimeout(() => {
+            addMessage("Hau yaar! I'm Hydra-Buddy. Ask me anything!", false);
+        }, 500);
+    </script>
+</body>
+</html>
